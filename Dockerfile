@@ -3,7 +3,7 @@
 FROM nginx
 RUN git clone https://github.com/spring-projects/spring-petclinic.git \
 && cd spring-petclinic \
-&& mvn package \
+&& mvn package 
 
 
 FROM openjdk:17
