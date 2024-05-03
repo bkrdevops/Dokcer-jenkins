@@ -1,13 +1,11 @@
 # Multistage build in Docker
 # building the application
-FROM nginx
-RUN git clone https://github.com/spring-projects/spring-petclinic.git \
-&& cd spring-petclinic \
-&& mvn package 
+FROM maven:3-openjdk-8 AS builder
+RUN git clone https://github.com/wakaleo/game-of-life.git && cd game-of-life && mvn package
 
 
-FROM openjdk:17
+# application image
+FROM tomcat:9
 LABEL author="bhaskar"
-LABEL project="devops"
+COPY --from=builder /game-of-life/gameoflife-web/target/gameoflife.war /usr/local/tomcat/webapps/gameoflife.war
 EXPOSE 8080
-CMD [ "java", "-jar", "/spring-petclinic-2.7.0-SNAPSHOT.jar" ]
